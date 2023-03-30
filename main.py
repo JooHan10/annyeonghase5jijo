@@ -15,6 +15,18 @@ uni = Uni(player_name)
 m_i_n = Min(player_name)
 ijh = Ijh(player_name)
 
+
+if player_select == 1:
+    p_character = crazy_cloud
+elif player_select == 2:
+    p_character = geu_ne
+elif player_select == 3:
+    p_character = uni
+elif player_select == 4:
+    p_character = m_i_n
+elif player_select == 5:
+    p_character = ijh
+    
 # 몬스터들 리스트 입니다. 랜덤으로 호출할 때 사용할 겁니다.
 
 # 잡몹
@@ -51,37 +63,39 @@ keyboard = Keyboard()
 
 manager_mon = None
 
+
 def random_manager_monster():
-    manager_monsters_names = random.choice([jy_manager, kc_manager, yh_boss_manager, ch_tuter, mc_tuter, god_bk])
+    if p_character.level <= 3:
+        manager_monsters_names = random.choice([jy_manager, kc_manager, yh_boss_manager])
+    elif p_character.level <= 6:
+        manager_monsters_names = random.choice([ch_tuter, mc_tuter])
+    else:
+        manager_monsters_names = god_bk
     return manager_monsters_names
 
 def random_jjob_monster():
-    jjob_monsters_names = random.sample([errormon, uhteamate, rtani], 2)
-    return jjob_monsters_names    
+    if p_character.level <=6:
+        jjob_monsters_names = random.sample([errormon, uhteamate, rtani], 2)
+        return jjob_monsters_names
+    else:
+        jjob_monsters_names = random.sample([errormon, uhteamate, rtani], 0)
 
 # monsters 변수 안에 [random 값1, random 값2, random 값3] 들어있음.
 manager_mon = random_manager_monster()
 jjob_monsters = random_jjob_monster()
 
 # manager_mon = manager_mon
-jjob_mon1 = jjob_monsters[0]
-jjob_mon2 = jjob_monsters[1]
+if p_character.level <= 6:
+    jjob_mon1 = jjob_monsters[0]
+    jjob_mon2 = jjob_monsters[1]
 
 
 # print(manager_mon.name, jjob_mon1.name, jjob_mon2.name)
 # monsters = random.choice([jy_manager, ky_manager, yh_boss_manager, ch_tuter, mc_tuter, god_bk])
 # 배틀종료시 if 몬스터 hp가 0: 일때 random으로 다시 몬스터f에 할당해주세요
 
-if player_select == 1:
-    p_character = crazy_cloud
-elif player_select == 2:
-    p_character = geu_ne
-elif player_select == 3:
-    p_character = uni
-elif player_select == 4:
-    p_character = m_i_n
-elif player_select == 5:
-    p_character = ijh
+
+
 
 enter_or_run = int(input("1.마을 입장 / 2. 게임 종료     "))
 if enter_or_run == 1:
@@ -103,8 +117,9 @@ while enter_or_run_tf == 1:
                     time.sleep(0.5)
                     p_character.show_status()
                     manager_mon.show_status()
-                    jjob_mon1.show_status()
-                    jjob_mon2.show_status()
+                    if p_character.level <= 6:
+                        jjob_mon1.show_status()
+                        jjob_mon2.show_status()
                     
                 def battle(): # 전투
                     global manager_mon
@@ -117,8 +132,9 @@ while enter_or_run_tf == 1:
                         p_character.level_up()
                         status_all()
                         manager_mon.cure()
-                        jjob_mon1.cure()
-                        jjob_mon2.cure()
+                        if p_character.level <= 6:
+                            jjob_mon1.cure()
+                            jjob_mon2.cure()
                         time.sleep(0.5)
                         print("배틀 종료! \n")
                         print("-----------------------------------------\n")
@@ -129,13 +145,21 @@ while enter_or_run_tf == 1:
                     if manager_mon.hp != 0:
                         time.sleep(0.5)
                         manager_mon.attack_or_skill(p_character)
-                        jjob_mon1.attack_jjob(p_character)
-                        jjob_mon2.attack_jjob(p_character)
+                        if p_character.level <= 6:
+                            jjob_mon1.attack_jjob(p_character)
+                            jjob_mon2.attack_jjob(p_character)
                         battle()
                     else:
                         battle()
-                            
-                print(f"{manager_mon.name}(이)가 {jjob_mon1.name}, {jjob_mon2.name}와(과) 함께 나타났다!")
+
+                def mon_appear():
+                    if p_character.level <= 6:
+                        print(f"{manager_mon.name}(이)가 {jjob_mon1.name}, {jjob_mon2.name}와(과) 함께 나타났다!")
+                    else:
+                        print("게더에 어두운 기운이 느껴진다.....")
+                        print(f"{manager_mon.name}가 등장했다!!!!!")
+
+                mon_appear()
                 print("싸울까요??")
                 time.sleep(0.5)
                 fight_or_run = int(input("1.Yes / 2.No     "))

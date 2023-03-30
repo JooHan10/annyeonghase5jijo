@@ -11,7 +11,7 @@ class BaseCharacter:
         self.mp = self.max_mp 
         self.magic_power = random.randrange(10, 16)
         self.experience = 0
-        self.level = 1
+        self.level = 7
         self.money = 50000000
         self.items = {}
 
