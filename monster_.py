@@ -2,28 +2,14 @@ from class_ import *
 # from main import *
 import random
 
-#############################################################################################
-        
-  # 몬스터 객체
-
 
 # 몬스터들 부모 클래스
 class Monster(BaseCharacter):
     def __init__(self, name):
         super().__init__(name)
-        # self.power = random.randrange(40, 51)
-    
 
-    #mp, power, magic_power, speed, experience, level, money
     def show_status(self):
         print(f"{self.name}의 상태: (HP) {self.hp}/{self.max_hp}")
-
-    # 몬스터 스킬
-    #1. 발제 (매니저 몬스터 공통 스킬)
-    #2. 감시 (카메라 끄면 찾아오기)
-    #3. 전화 (지각하면 깨워주기)
-    #4. DM (TIL 재촉하기)
-    #5. 찐한 관리 / 면담
     
     # 발제
     def attack_homework(self, other):
@@ -125,7 +111,6 @@ class Rtani(Monster):
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
         
-#############################################################################################
 # 지영 매니저님
 class JYManager(Monster):
     def __init__(self, name):
@@ -151,20 +136,3 @@ class GodBK(Monster):
     def __init__(self, name):
         super().__init__(name)
 
-    #몬스터
-    #1. 에러
-    #2. 어? 하는 팀원
-    #3. 르탄이
-    
-    #4. 이지영 (신입 몹)
-    #5. 양기철 (신입 몹)
-    #6. 공영환 (엘리트 몹)
-    
-    #7 이창호 (멀티커서 몹)
-    #8 강민철 (알고리즘 몹)
-    
-    #9 이범규 (신)
-
-
-
-#############################################################################################
