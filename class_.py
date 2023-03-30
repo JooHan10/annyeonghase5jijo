@@ -14,10 +14,12 @@ class BaseCharacter:
         self.experience = 0
         self.level = 1
         self.money = 0
+        self.items = {}
 
     def cure(self):
         self.hp = self.max_hp
         self.mp = self.max_mp
+
 
 #############################################################################################
 
@@ -44,9 +46,9 @@ class Character(BaseCharacter):
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다!")
                 self.money += 500
-                print(f'{self.name}의 돈이 {self.money}가 되었습니다!')
+                print(f'{self.name}의 돈이 💰{self.money}가 되었습니다!')
                 self.experience += 500
-                print(f'{self.name}의 경험치가 {self.experience}가 되었습니다!')
+                print(f'{self.name}의 경험치가 🎁{self.experience}가 되었습니다!')
                     
 
     # 카메라 끄고 잠수 타기
@@ -54,7 +56,7 @@ class Character(BaseCharacter):
         if other.hp != 0:
             damage = random.randint(self.power - 2, self.power + 2)
             other.hp = max(other.hp - damage, 0)
-            print(f"{self.name}의 카메라 끄기! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
+            print(f"{self.name}의 카메라 끄기!📷 {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다!")
@@ -92,9 +94,29 @@ class Character(BaseCharacter):
             print("f'{self.price - self.money}'금액이 모자랍니다")
         else:
             self.money -= price
+            self.add_item()
    
     def give_item(self, itemnumber):
             pass
+    
+    def add_item(self, item_name, quantity):
+        self.item_name = item_name
+        self.quantity = quantity
+
+        if item_name in self.items.keys():
+            self.items[item_name] += quantity  # 이미 있는 아이템이면 수량 추가
+        else:
+            self.items[item_name] = quantity  # 새 아이템이면 딕셔너리에 추가
+
+        print(f"{self.name}님의 인벤토리를 보시겠습니까?")
+        inven_show = input("1.YES / 2.NO    ")
+        if inven_show == 1:
+            self.show_items()
+
+    def show_items(self):
+        for item_name, quantity in self.items.items(): # self.items 딕셔너리에 item()로 (키, 값) 형태로 보기
+            print(item_name, str(quantity)+"개")
+         
     
     #mp, power, magic_power, speed, experience, level, money
     def show_status(self):
@@ -106,7 +128,7 @@ class CrazyCloud(Character): # 각각 디폴트값을 주는 것 말고 한번�
     def __init__(self, name):
         super().__init__(name)
         self.power = 500
-        self.hp = 1
+        self.hp = 1000
         self.speed = 1
         #개인스킬
 

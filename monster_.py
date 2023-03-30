@@ -28,8 +28,9 @@ class Monster(BaseCharacter):
     # 발제
     def attack_homework(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 발제 공격! 너의 주말은 없다! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 발제 공격!📜 너의 주말은 없다! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
@@ -37,8 +38,9 @@ class Monster(BaseCharacter):
     # 감시
     def attack_cam(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 감시 공격! 캠을 끌 수 없어! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 감시 공격! 캠을 끌 수 없어!📸 {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
@@ -46,8 +48,9 @@ class Monster(BaseCharacter):
     # 전화
     def attack_call(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 전화 공격! 늦잠은 안 돼지! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 전화 공격!📞 늦잠은 안 돼지! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
@@ -55,8 +58,9 @@ class Monster(BaseCharacter):
     # DM
     def attack_dm(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 DM 공격! 재촉은 내 전문! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 DM 공격! 재촉은 내 전문! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
@@ -64,11 +68,16 @@ class Monster(BaseCharacter):
     # 찐한 관리 / 면담
     def attack_interview(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 면담 공격! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 면담 공격! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
+
+    def attack_or_skill(self, other):
+        select = random.choice([self.attack_homework, self.attack_cam, self.attack_call, self.attack_dm, self.attack_interview])
+        select(other)
 
 
 # 잡몹
@@ -77,10 +86,11 @@ class ErrorMon(Monster):
         super().__init__(name)
 
     # 에러
-    def attack_error(self, other):
+    def attack_jjob(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 에러 공격! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 에러 공격! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
@@ -91,10 +101,11 @@ class TrollTeammate(Monster):
         super().__init__(name)
 
     # 웅성웅성대기
-    def attack_troll(self, other):
+    def attack_jjob(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 웅성웅성 공격! 무슨 일이 일어난거지! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 웅성웅성 공격! 무슨 일이 일어난거지! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
@@ -105,10 +116,11 @@ class Rtani(Monster):
         super().__init__(name)
 
     # 귀여움
-    def attack_rtan(self, other):
+    def attack_jjob(self, other):
         if other.hp != 0:
-            other.hp = max(other.hp - self.power, 0)
-            print(f"{self.name}의 면담 공격! {other.name}에게 {self.power}의 데미지를 입혔습니다. \n")
+            damage = random.randint(self.power - 2, self.power + 2)
+            other.hp = max(other.hp - damage, 0)
+            print(f"{self.name}의 공격! {other.name}에게 {damage}의 데미지를 입혔습니다. \n")
             print("-----------------------------------------")
             if other.hp == 0:
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")

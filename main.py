@@ -26,26 +26,63 @@ while True:
 
     # Characters = {}
     # Characters['uni'] = Character(player_name(uni??????))
-    # hp, mp, power, magic_pow
+    # hp, mp, power, magic_powff
+
 
     # 몬스터들 리스트 입니다. 랜덤으로 호출할 때 사용할 겁니다.
+
+    # 잡몹
+    errormon = ErrorMon("에러몬")
+    uhteamate = TrollTeammate("어? 하는 팀원")
+    rtani = Rtani("르탄이")
+    
+    # 매니저몬
     jy_manager = JYManager("지영매니저님")
     ky_manager = KCManager("기철매니저님")
     yh_boss_manager = YHBossManager("영환매니저님")
+
+    # 튜터몬
     ch_tuter = CHTuter("창호튜터님")
     mc_tuter = MCTuter("민철튜터님")
+
+    # 보스
     god_bk = GodBK("갓규")
-    
 
 
-    def random_monster():
-        names = random.choice([jy_manager, ky_manager, yh_boss_manager, ch_tuter, mc_tuter, god_bk])
-        return names
 
-    monsters = random_monster()
 
+    # 던전 => 전투 시작 전투함수를 따로 짜서 level값에 따라 등장 몬스터 변경 ex) level 3이하 ~~~// 4~6 // 7일때 갓범규 소환
+    # if monster.hp > 0 and player.hp > 0:
+    # 무엇을 할까? input
+    # (1.캠끄기  2.지각하기 3.TIL안내기) => 기본공격이 3개는 너무 많음(이것도 랜덤으로?). 4.개인스킬 5.사용아이템 6.턴넘기기(디버깅용)
+    # 전투 종료시마다 마을 인벤토리 던전 중에 어디로 갈지 선택
+
+    # 1, 4레벨에 몬스터 1마리 / 2,5레벨에 몬스터 2마리 / 3,6 레벨에 몬스터 3마리
+
+    # 7레벨에 갓범규 대표님과의 전투 승리시 엔딩 스토리 출력
+
+
+    def random_manager_monster():
+        manager_monsters_names = random.choice([jy_manager, ky_manager, yh_boss_manager, ch_tuter, mc_tuter, god_bk])
+        return manager_monsters_names
+
+    def random_jjob_monster():
+        jjob_monsters_names = random.sample([errormon, uhteamate, rtani], 2)
+        return jjob_monsters_names    
+
+    # monsters 변수 안에 [random 값1, random 값2, random 값3] 들어있음.
+    manager_mon = random_manager_monster()
+    jjob_monsters = random_jjob_monster()
+
+    #
+    manager_mon = manager_mon
+    jjob_mon1 = jjob_monsters[0]
+    jjob_mon2 = jjob_monsters[1]
+
+
+    print(manager_mon.name, jjob_mon1.name, jjob_mon2.name)
     # monsters = random.choice([jy_manager, ky_manager, yh_boss_manager, ch_tuter, mc_tuter, god_bk])
-    # 배틀종료시 if 몬스터 hp가 0: 일때 random으로 다시 몬스터에 할당해주세요
+    # 배틀종료시 if 몬스터 hp가 0: 일때 random으로 다시 몬스터f에 할당해주세요
 
     if player_select == 1:
         p_character = crazy_cloud
@@ -74,7 +111,7 @@ while True:
 
     elif enter_or_run == 2:
         print("..........................................")
-        print("빤쓰런 합니다..............🏃‍♂️")
+        print("빤쓰런 합니다..............🏃‍♂️~~~")
         sys.exit()
 
     
@@ -109,8 +146,8 @@ while True:
                 # print("!\n")
                 # time.sleep(0.5)
                 # print("!\n")
-                # time.sleep(0.5)
-                print(f"{monsters.name}(이)가 나타났다!\n")
+                # time.sleep(0.5)            
+                print(f"{manager_mon.name}(이)가 {jjob_mon1.name}, {jjob_mon2.name}와(과) 함께 나타났다!")
                 print("싸울까요??")
                 time.sleep(0.5)
                 fight_or_run = int(input("1.Yes / 2.No     "))
@@ -120,12 +157,14 @@ while True:
                     time.sleep(1)
                     print("----------------------------------------- \n")
                     p_character.show_status()
-                    monsters.show_status()
+                    manager_mon.show_status()
+                    jjob_mon1.show_status()
+                    jjob_mon2.show_status()
                     print("----------------------------------------- \n")
                     time.sleep(1)
-                    if p_character.speed >= monsters.speed:
+                    if p_character.speed >= manager_mon.speed:
                         first_attack = 1
-                    elif p_character.speed < monsters.speed:
+                    elif p_character.speed < manager_mon.speed:
                         first_attack = 2
 
                         # 몬스터 스킬
@@ -137,154 +176,204 @@ while True:
 
                     while True:
                         if first_attack == 1:
-                            print("플레이어가 더 빠릅니다 어떤 공격을 할까요??")
+                            print("플레이어가 더 빠릅니다. 어떤 공격을 할까요??")
                             time.sleep(0.5)
                             attack_input1 = int(
-                                input("1.몸통박치기 / 2.카메라 끄기!     ")
+                                input("1. 카메라 끄기! / 2. T.I.L 미제출!     ")
                             )
                             print("")
                             if attack_input1 == 1:
                                 time.sleep(0.5)
-                                p_character.attack_cam_off(monsters)
-                                if monsters.hp != 0:
+                                p_character.attack_cam_off(manager_mon)
+                                if manager_mon.hp != 0:
                                     time.sleep(0.5)
-                                    monsters.attack_homework(p_character)
-                                    if p_character.hp != 0 and monsters.hp != 0:
+                                    manager_mon.attack_or_skill(p_character)
+                                    jjob_mon1.attack_jjob(p_character)
+                                    jjob_mon2.attack_jjob(p_character)
+                                    if p_character.hp != 0 and manager_mon.hp != 0:
                                         time.sleep(0.5)
                                         p_character.show_status()
-                                        monsters.show_status()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
                                         print("-----------------------------------------")
-                                    elif p_character.hp == 0 or monsters.hp == 0:
+                                    elif p_character.hp == 0 or manager_mon.hp == 0:
                                         time.sleep(0.5)
                                         p_character.show_status()
-                                        monsters.show_status()
-                                        monsters.cure()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
+                                        manager_mon.cure()
+                                        jjob_mon1.cure()
+                                        jjob_mon2.cure()
                                         time.sleep(0.5)
                                         print("----------------------------------------- \n")
                                         time.sleep(0.5)
-                                        monsters = random_monster()
+                                        manager_mon = random_manager_monster()
                                         break
-                                elif p_character.hp == 0 or monsters.hp == 0:
+                                elif p_character.hp == 0 or manager_mon.hp == 0:
                                     time.sleep(0.5)
                                     p_character.show_status()
-                                    monsters.show_status()
-                                    monsters.cure()
+                                    manager_mon.show_status()
+                                    jjob_mon1.show_status()
+                                    jjob_mon2.show_status()
+                                    manager_mon.cure()
+                                    jjob_mon1.cure()
+                                    jjob_mon2.cure()
+                                    p_character.level_up()
                                     time.sleep(0.5)
                                     print("배틀 종료! \n")
                                     print("----------------------------------------- \n")
                                     time.sleep(0.5)
-                                    monsters = random_monster()
+                                    manager_mon = random_manager_monster()
                                     break
                             elif attack_input1 == 2:
                                 time.sleep(0.5)
-                                p_character.attack_til(monsters)
-                                if monsters.hp != 0:
+                                p_character.attack_til(manager_mon)
+                                if manager_mon.hp != 0:
                                     time.sleep(0.5)
-                                    monsters.attack_homework(p_character)
-                                    if p_character.hp != 0 and monsters.hp != 0:
+                                    manager_mon.attack_or_skill(p_character)
+                                    if p_character.hp != 0 and manager_mon.hp != 0:
                                         time.sleep(0.5)
                                         p_character.show_status()
-                                        monsters.show_status()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
                                         print("-----------------------------------------")
-                                    elif p_character.hp == 0 or monsters.hp == 0:
+                                    elif p_character.hp == 0 or manager_mon.hp == 0:
                                         time.sleep(0.5)
                                         p_character.show_status()
-                                        monsters.show_status()
-                                        monsters.cure()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
+                                        manager_mon.cure()
+                                        jjob_mon1.cure()
+                                        jjob_mon2.cure()
                                         time.sleep(0.5)
                                         print("-----------------------------------------\n")
                                         time.sleep(0.5)
-                                        monsters = random_monster()
+                                        manager_mon = random_manager_monster()
                                         break
-                                elif p_character.hp == 0 or monsters.hp == 0:
+                                elif p_character.hp == 0 or manager_mon.hp == 0:
                                     time.sleep(0.5)
                                     p_character.show_status()
-                                    monsters.show_status()
-                                    monsters.cure()
+                                    manager_mon.show_status()
+                                    jjob_mon1.show_status()
+                                    jjob_mon2.show_status()
+                                    manager_mon.cure()
+                                    jjob_mon1.cure()
+                                    jjob_mon2.cure()
+                                    p_character.level_up()
                                     time.sleep(0.5)
                                     print("배틀 종료! \n")
                                     print("-----------------------------------------\n")
                                     time.sleep(0.5)
-                                    monsters = random_monster()
+                                    manager_mon = random_manager_monster()
                                     break
 
                         elif first_attack == 2:
                             print("몬스터가 더 빠릅니다. 후공으로 어떤 공격을 할까요??")
                             time.sleep(0.5)
                             attack_input2 = int(
-                                input(f"1.몸통박치기 / 2.카메라끄기!     ")
+                                input(f"1. 카메라끄기! / 2. T.I.L 미제출!     ")
                             )
                             print("")
                             if attack_input2 == 1:
                                 time.sleep(0.5)
-                                monsters.attack_homework(p_character)
+                                manager_mon.attack_or_skill(p_character)
+                                jjob_mon1.attack_jjob(p_character)
+                                jjob_mon2.attack_jjob(p_character)
                                 if p_character.hp != 0:
                                     time.sleep(0.5)
-                                    p_character.attack_cam_off(monsters)
-                                    if monsters.hp != 0 and p_character.hp != 0:
+                                    p_character.attack_cam_off(manager_mon)
+                                    if manager_mon.hp != 0 and p_character.hp != 0:
                                         time.sleep(0.5)
-                                        monsters.show_status()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
                                         p_character.show_status()
                                         print("-----------------------------------------")
-                                    elif p_character.hp == 0 or monsters.hp == 0:
+                                    elif p_character.hp == 0 or manager_mon.hp == 0:
                                         time.sleep(0.5)
                                         p_character.show_status()
-                                        monsters.show_status()
-                                        monsters.cure()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
+                                        manager_mon.cure()
+                                        jjob_mon1.cure()
+                                        jjob_mon2.cure()
                                         time.sleep(0.5)
                                         print("-----------------------------------------\n")
                                         time.sleep(0.5)
-                                        monsters = random_monster()
+                                        manager_mon = random_manager_monster()
                                         break
-                                elif p_character.hp == 0 or monsters.hp == 0:
+                                elif p_character.hp == 0 or manager_mon.hp == 0:
                                     time.sleep(0.5)
                                     p_character.show_status()
-                                    monsters.show_status()
-                                    monsters.cure()
+                                    manager_mon.show_status()
+                                    jjob_mon1.show_status()
+                                    jjob_mon2.show_status()
+                                    manager_mon.cure()
+                                    jjob_mon1.cure()
+                                    jjob_mon2.cure()
+                                    p_character.level_up()
                                     time.sleep(0.5)
                                     print("배틀 종료! \n")
                                     print("-----------------------------------------\n")
                                     time.sleep(0.5)
-                                    monsters = random_monster()
+                                    manager_mon = random_manager_monster()
                                     break
                             elif attack_input2 == 2:
                                 time.sleep(0.5)
-                                monsters.attack_homework(p_character)
+                                manager_mon.attack_or_skill(p_character)
+                                jjob_mon1.attack_jjob(p_character)
+                                jjob_mon2.attack_jjob(p_character)
                                 if p_character.hp != 0:
                                     time.sleep(0.5)
-                                    p_character.attack_til(monsters)
-                                    if monsters.hp != 0 and p_character.hp != 0:
+                                    p_character.attack_til(manager_mon)
+                                    if manager_mon.hp != 0 and p_character.hp != 0:
                                         time.sleep(0.5)
                                         p_character.show_status()
-                                        monsters.show_status()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
                                         print("-----------------------------------------")
-                                    elif p_character.hp == 0 or monsters.hp == 0:
+                                    elif p_character.hp == 0 or manager_mon.hp == 0:
                                         time.sleep(0.5)
                                         p_character.show_status()
-                                        monsters.show_status()
-                                        monsters.cure()
+                                        manager_mon.show_status()
+                                        jjob_mon1.show_status()
+                                        jjob_mon2.show_status()
+                                        manager_mon.cure()
+                                        jjob_mon1.cure()
+                                        jjob_mon2.cure()
                                         print("-----------------------------------------\n")
                                         time.sleep(0.5)
-                                        monsters = random_monster()
+                                        manager_mon = random_manager_monster()
                                         break
-                                elif p_character.hp == 0 or monsters.hp == 0:
+                                elif p_character.hp == 0 or manager_mon.hp == 0:
                                     time.sleep(0.5)
                                     p_character.show_status()
-                                    monsters.show_status()
-                                    monsters.cure()
+                                    manager_mon.show_status()
+                                    jjob_mon1.show_status()
+                                    jjob_mon2.show_status()
+                                    manager_mon.cure()
+                                    jjob_mon1.cure()
+                                    jjob_mon2.cure()
+                                    p_character.level_up()
                                     time.sleep(0.5)
                                     print("배틀 종료!\n")
                                     print("-----------------------------------------\n")
                                     time.sleep(0.5)
-                                    monsters = random_monster()
+                                    manager_mon = random_manager_monster()
                                     break
                 elif fight_or_run == 2:
                     time.sleep(0.5)
                     print(".........................................")
                     print(".........................................")
-                    print(".................................도망쳤습니다!\n")
+                    print("..............................도망쳤습니다!\n")
                     time.sleep(2)
-                    monsters.random_monster()
+                    manager_mon.random_manager_monster()
 
             elif hunt_or_town == 2: 
                 print("마을에 왔습니다! 이제 쉽시다!.")
@@ -295,7 +384,7 @@ while True:
         
         
         elif p_character.level > 7: #갓범규 클리어시 무조건 레벨업으로 클리어메시지
-            print("스파르타 던전을 클리어하셨습니다.")
+            print("스파르타 던전을 클리어하셨습니다!🎊")
             sys.exit()
 
 
@@ -312,14 +401,5 @@ while True:
     # 마을 => 1.무기점 2.음식점 3.잡화 4.돌아가기
     # 인벤토리 => 1.장비 2.소비아이템 3. 돌아가기
 
-    # 던전 => 전투 시작 전투함수를 따로 짜서 level값에 따라 등장 몬스터 변경 ex) level 3이하 ~~~// 4~6 // 7일때 갓범규 소환
-    # if monster.hp > 0 and player.hp > 0:
-    # 무엇을 할까? input
-    # (1.캠끄기  2.지각하기 3.TIL안내기) => 기본공격이 3개는 너무 많음(이것도 랜덤으로?). 4.개인스킬 5.사용아이템 6.턴넘기기(디버깅용)
-    # 전투 종료시마다 마을 인벤토리 던전 중에 어디로 갈지 선택
-
-    # 1, 4레벨에 몬스터 1마리 / 2,5레벨에 몬스터 2마리 / 3,6 레벨에 몬스터 3마리
-
-    # 7레벨에 갓범규 대표님과의 전투 승리시 엔딩 스토리 출력
 
     # ============================================================================
