@@ -7,6 +7,7 @@ import random
 class Monster(BaseCharacter):
     def __init__(self, name):
         super().__init__(name)
+        self.power = 6
 
     def show_status(self):
         print(f"{self.name}의 상태: (HP) {self.hp}/{self.max_hp}")
@@ -70,7 +71,10 @@ class Monster(BaseCharacter):
 class ErrorMon(Monster):
     def __init__(self, name):
         super().__init__(name)
-
+        self.power = 4
+        self.max_hp = random.randint(10, 14)
+        self.hp = self.max_hp
+            
     # 에러
     def attack_jjob(self, other):
         if other.hp != 0:
@@ -85,6 +89,9 @@ class ErrorMon(Monster):
 class TrollTeammate(Monster):
     def __init__(self, name):
         super().__init__(name)
+        self.power = 4
+        self.max_hp = random.randint(10, 14)
+        self.hp = self.max_hp
 
     # 웅성웅성대기
     def attack_jjob(self, other):
@@ -100,6 +107,9 @@ class TrollTeammate(Monster):
 class Rtani(Monster):
     def __init__(self, name):
         super().__init__(name)
+        self.power = 4
+        self.max_hp = random.randint(10, 14)
+        self.hp = self.max_hp
 
     # 귀여움
     def attack_jjob(self, other):
@@ -112,27 +122,64 @@ class Rtani(Monster):
                 print(f"{other.name}(이)가 쓰러졌습니다! {self.name}의 승리!")
         
 # 지영 매니저님
-class JYManager(Monster):
+class JYManager(Monster): # 1-3 Lv
     def __init__(self, name):
         super().__init__(name)
-# 기철 매니저님
-class KCManager(Monster):
-    def __init__(self, name):
-        super().__init__(name)
-# 영환 매니저님
-class YHBossManager(Monster):
-    def __init__(self, name):
-        super().__init__(name)
-# 창호 튜터님
-class CHTuter(Monster):
-    def __init__(self, name):
-        super().__init__(name)
-# 민철 튜터님 
-class MCTuter(Monster):
-    def __init__(self, name):
-        super().__init__(name)
-# 갓범규님
-class GodBK(Monster):
-    def __init__(self, name):
-        super().__init__(name)
+        self.power = 8
+        self.max_hp = random.randrange(40, 51)
+        self.hp = self.max_hp
+        self.experience = 500
+        self.money = random.choice([0, 100])
 
+# 기철 매니저님
+class KCManager(Monster): # 1-3 Lv
+    def __init__(self, name):
+        super().__init__(name)
+        self.power = 8
+        self.max_hp = random.randrange(40, 51)
+        self.hp = self.max_hp
+        self.experience = 500
+        self.money = random.choice([0, 100])
+
+# 영환 매니저님
+class YHBossManager(Monster): # 1-3 Lv
+    def __init__(self, name):
+        super().__init__(name)
+        self.power = 12
+        self.max_hp = random.randrange(40, 51)
+        self.hp = self.max_hp
+        self.experience = 500
+        self.money = 200
+
+# 창호 튜터님
+class CHTuter(Monster): # 4-5 Lv
+    def __init__(self, name):
+        super().__init__(name)
+        self.power = 40
+        self.max_hp = random.randrange(70, 81)
+        self.hp = self.max_hp
+        self.experience = 1000
+        self.money = 2000
+        
+# 민철 튜터님 
+class MCTuter(Monster): # 4-5 Lv
+    def __init__(self, name):
+        super().__init__(name)
+        self.power = 40
+        self.max_hp = random.randrange(70, 81)
+        self.hp = self.max_hp
+        self.experience = 1000
+        self.money = 2000
+
+# 갓범규님
+class GodBK(Monster): # 6 Lv
+    def __init__(self, name):
+        super().__init__(name)
+        self.power = 50
+        self.max_hp = 1000
+        self.hp = self.max_hp
+        self.experience = 100000
+        self.money = 10000
+
+        #스킬 자체회복 - 물약 코드스니펫 딸깍
+        #

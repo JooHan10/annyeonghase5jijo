@@ -8,17 +8,16 @@ class Knife:
     def __init__(self):
         self.item_name = "검"
         self.power = 5
-        self.price = 100
+        self.price = 450
 
 class OldCam:
     def __init__(self):
         self.item_name = "낡은 캠"
-        self.power = 5
-        self.price = 250
+        self.power = 30
+        self.price = 2500
 
 class Keyboard:
     def __init__(self):
         self.item_name = "키보드-no.59"
-        self.power = 10
-        self.price = 500
-    
+        self.power = 200
+        self.price = 10000

@@ -15,7 +15,6 @@ uni = Uni(player_name)
 m_i_n = Min(player_name)
 ijh = Ijh(player_name)
 
-
 if player_select == 1:
     p_character = crazy_cloud
 elif player_select == 2:
@@ -57,9 +56,9 @@ keyboard = Keyboard()
 # (1.캠끄기  2.지각하기 3.TIL안내기) => 기본공격이 3개는 너무 많음(이것도 랜덤으로?). 4.개인스킬 5.사용아이템 6.턴넘기기(디버깅용)
 # 전투 종료시마다 마을 인벤토리 던전 중에 어디로 갈지 선택
 
-# 1, 4레벨에 몬스터 1마리 / 2,5레벨에 몬스터 2마리 / 3,6 레벨에 몬스터 3마리
+# 1, 4레벨에 몬스터 1마리 / 2,5레벨에 몬스터 2마리 / 3 레벨에 몬스터 3마리
 
-# 7레벨에 갓범규 대표님과의 전투 승리시 엔딩 스토리 출력
+# 6 레벨에 갓범규 대표님과의 전투 승리시 엔딩 스토리 출력
 
 manager_mon = None
 
@@ -67,14 +66,14 @@ manager_mon = None
 def random_manager_monster():
     if p_character.level <= 3:
         manager_monsters_names = random.choice([jy_manager, kc_manager, yh_boss_manager])
-    elif p_character.level <= 6:
+    elif p_character.level <= 5:
         manager_monsters_names = random.choice([ch_tuter, mc_tuter])
     else:
         manager_monsters_names = god_bk
     return manager_monsters_names
 
 def random_jjob_monster():
-    if p_character.level <=6:
+    if p_character.level <= 5:
         jjob_monsters_names = random.sample([errormon, uhteamate, rtani], 2)
         return jjob_monsters_names
     else:
@@ -85,7 +84,7 @@ manager_mon = random_manager_monster()
 jjob_monsters = random_jjob_monster()
 
 # manager_mon = manager_mon
-if p_character.level <= 6:
+if p_character.level <= 5:
     jjob_mon1 = jjob_monsters[0]
     jjob_mon2 = jjob_monsters[1]
 
@@ -95,6 +94,21 @@ if p_character.level <= 6:
 # 배틀종료시 if 몬스터 hp가 0: 일때 random으로 다시 몬스터f에 할당해주세요
 
 
+
+# 전투당 적정 공격 횟수?
+# 
+
+# 레벨별로 적정 전투 횟수?
+# 1-3 Lv : 
+# 4-5 Lv : 5-6번?
+# 레벨별로 경험치가 다른데 괜찮을지? > 몬스터가 주는 경험치량을 늘려서 해결해보죠
+# 
+
+# 캐릭터 회복 기능이 없음..
+# > 마을로 가면 회복? Yes ok
+
+# 몬스터가 hp !=0 일 동안 전투
+# 
 
 
 enter_or_run = int(input("1.마을 입장 / 2. 게임 종료     "))
@@ -106,7 +120,7 @@ elif enter_or_run == 2:
     sys.exit()
 
 while enter_or_run_tf == 1:
-    if p_character.level <= 7:
+    if p_character.level <= 6:
         if p_character.hp != 0:
             print("마을에 들어갑니다!\n")
 
@@ -131,15 +145,11 @@ while enter_or_run_tf == 1:
                         time.sleep(0.5)
                         p_character.level_up()
                         status_all()
-                        manager_mon.cure()
-                        if p_character.level <= 6:
-                            jjob_mon1.cure()
-                            jjob_mon2.cure()
                         time.sleep(0.5)
                         print("배틀 종료! \n")
                         print("-----------------------------------------\n")
                         time.sleep(0.5)
-                        manager_mon = random_manager_monster()
+                        
 
                 def after_attack(): #몬스터 공격
                     if manager_mon.hp != 0:
@@ -153,7 +163,7 @@ while enter_or_run_tf == 1:
                         battle()
 
                 def mon_appear():
-                    if p_character.level <= 6:
+                    if p_character.level <= 5:
                         print(f"{manager_mon.name}(이)가 {jjob_mon1.name}, {jjob_mon2.name}와(과) 함께 나타났다!")
                     else:
                         print("게더에 어두운 기운이 느껴진다.....")
@@ -169,8 +179,7 @@ while enter_or_run_tf == 1:
                     status_all()
                     time.sleep(1)                
                     
-
-                    while True:                       
+                    while manager_mon.hp != 0 and p_character.hp !=0:                       
                         print("어떤 공격을 할까요??")
                         attack_input1 = int(input("1.카메라 끄기! / 2. T.I.L 미제출! / 3. 지각 / 4. 스킬     "))
                         print("")
@@ -178,30 +187,33 @@ while enter_or_run_tf == 1:
                             time.sleep(0.5)
                             p_character.attack_cam_off(manager_mon)
                             after_attack()
-                            break
 
                         elif attack_input1 == 2:
                             time.sleep(0.5)
                             p_character.attack_til(manager_mon)
                             after_attack()
-                            break    
-
+                            
                         elif attack_input1 == 3:
                             time.sleep(0.5)
                             p_character.attack_late(manager_mon)
                             after_attack()
-                            break
-                        
+                            
                         elif attack_input1 == 4:
                             time.sleep(0.5)
                             p_character.character_skill(manager_mon)
                             after_attack()
-                            break
-                        
+                            
                         else:
                             print("잘못된 입력입니다.")
                             continue
-                    
+
+                    if p_character.level <= 6:
+                        manager_mon = random_manager_monster()
+                        manager_mon.cure()    
+                    if p_character.level <= 5:
+                        jjob_mon1.cure()
+                        jjob_mon2.cure()   
+                        
                 elif fight_or_run == 2:
                     time.sleep(0.5)
                     print("도망쳤습니다!\n")
@@ -213,32 +225,33 @@ while enter_or_run_tf == 1:
 
             elif hunt_or_town == 2: # 마을
                 print("마을에 왔습니다! 상점을 이용하시겠습니까?")
-                service_select = int(input("1.아이템상점 / 2.무기상점 / 3.잡화상점     "))
+                service_select = int(input("1.아이템상점 / 2.휴식하기 / 3.무기상점     "))
                 if service_select == 1:
                     print("아이템상점에 들어왔습니다! 어떤 아이템을 구매하시겠습니까?")
                     print(f"현재 보유하신 {p_character.name}님의 머니는 {p_character.money}입니다!")
-                    item_select = int(input("1.검(100) / 2.낡은 캠(250) / 3.키보드(500)     "))
+                    item_select = int(input("1.검(450) / 2.낡은 캠(2500) / 3.키보드(10000)     "))
                     if item_select == 1:
                         p_character.buy_item(knife)
                     elif item_select == 2:
                         p_character.buy_item(old_cam)
                     elif item_select == 3:
                         p_character.buy_item(keyboard)
-                        print(p_character.power)
                 elif service_select == 2: 
-                    print("무기상점은 아직 준비되지 않았습니다...")
+                    print("적절한 휴식은 필수.\nhp와 mp가 max로 회복되었습니다!")
+                    p_character.cure()
+                elif service_select == 3:                    
+                    print("무기상점은 공사중입니다...\n연락주시면 바로 오겠습니다. -🚒내배캠119🚨")
                     continue
-                elif service_select == 3:
-                    print("잡화상점은 문이 닫혀있습니다...")
                 else:
                     print("잘못된 입력입니다.")
                     continue
                     
         elif p_character.hp == 0:
-            print("체력을 소진하여 마을에 왔습니다! !.")
-            break
+            print("체력을 소진하였습니다! !.")
+            p_character.cure()
+            continue
     
-    elif p_character.level > 7: #갓범규 클리어시 무조건 레벨업으로 클리어메시지
+    elif god_bk.hp == 0: #갓범규 클리어시 무조건 레벨업으로 클리어메시지
         print("스파르타 던전을 클리어하셨습니다!🎊")
         sys.exit()
 
