@@ -102,13 +102,13 @@ class Character(BaseCharacter):
                 self.items[other.item_name] += 1  # 이미 있는 아이템이면 수량 추가
             else:
                 self.items[other.item_name] = 1  # 새 아이템이면 딕셔너리에 추가
-        print(f"{self.name}님의 {other.item_name} 구매가 완료되었습니다! 인벤토리를 여시겠습니까?")
-        inven_show = int(input("1.YES / 2.NO    "))
-        if inven_show == 1:
-            for item_name, self.items[other.item_name] in self.items.items(): # self.items 딕셔너리에 item()로 (키, 값) 형태로 보기
-                print("["+item_name, str(self.items[other.item_name])+"개]")
-        elif inven_show == 2:
-            pass
+                print(f"{self.name}님의 {other.item_name} 구매가 완료되었습니다! 인벤토리를 여시겠습니까?")
+                inven_show = int(input("1.YES / 2.NO    "))
+                if inven_show == 1:
+                    for item_name, self.items[other.item_name] in self.items.items(): # self.items 딕셔너리에 item()로 (키, 값) 형태로 보기
+                        print("["+item_name, str(self.items[other.item_name])+"개]")
+                elif inven_show == 2:
+                    pass
 
     # def show_items(self):        
     #     for item_name, quantity in self.items.items(): # self.items 딕셔너리에 item()로 (키, 값) 형태로 보기
